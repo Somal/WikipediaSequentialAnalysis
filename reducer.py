@@ -13,7 +13,8 @@ for line in sys.stdin:
     if title == current_title:
         current_count += count
     else:
-        print("{}\t{}".format(current_title, current_count))
+        if current_title is not None:
+            print("{}\t{}".format(current_title, current_count))
         current_title, current_count = title, count
 
 if current_title == title:
