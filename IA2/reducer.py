@@ -1,21 +1,29 @@
 import sys
 
 current_title = None
-current_count = 0
+count_by_date = {}
 for line in sys.stdin:
-    title, count = line.split('\t')
+    title, count, date = line.split('\t')
 
     try:
         count = int(count)
+        date = int(date)
     except ValueError:
         continue
 
     if title == current_title:
-        current_count += count
+        count_by_date[date] = count
     else:
         if current_title is not None:
-            print("{}\t{}".format(current_title, current_count))
-        current_title, current_count = title, count
+            total_month_views = sum(count_by_date.values())
+            print(total_month_views)
+            if total_month_views > 100000:
+                print("{}\t{}".format(total_month_views, title) + "\t".join(
+                    ["{}:{}".format(date, count_by_date[date]) for date in sorted(count_by_date.keys())]))
+        current_title = title
+        count_by_date = {date: count}
 
-if current_title == title:
-    print("{}\t{}".format(current_title, current_count))
+total_month_views = sum(count_by_date.values())
+if total_month_views > 100000:
+    print("{}\t{}".format(total_month_views, current_title) + "\t".join(
+        ["{}:{}".format(date, count) for date, count in count_by_date.items()]))
