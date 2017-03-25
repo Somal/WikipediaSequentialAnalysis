@@ -1,3 +1,4 @@
+import os
 import sys
 
 EXCEPTED_TAGS = ['Media:',
@@ -54,6 +55,9 @@ for line in sys.stdin:
                                 break
 
                         if not title_including:
+                            file_name = os.environ['mapreduce_map_input_file"']
+                            date, time = file_name.split()[1:]
+                            date = date[-2:]
                             print("{}\t{}".format(page_title, number_of_access))
         except:
             pass
